@@ -1,0 +1,12 @@
+{
+    "name": "campb/spec",
+    "authors": [
+        {
+            "name": "Exilesprx",
+            "email": "campbell.andrew86@yahoo.com"
+        }
+    ],
+    "require": {
+        "phpunit/phpunit": "^9.5"
+    }
+}
