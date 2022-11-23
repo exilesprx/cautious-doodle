@@ -1,0 +1,8 @@
+jobs:
+  build:
+    docker:
+      - image: cimg/php:8.0.25
+    steps:
+      - checkout
+      - run: php --version
+      - run: composer test

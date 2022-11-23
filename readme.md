@@ -15,3 +15,5 @@
 - Select "use composer autoloader"
 - Set the "path to script" to the location of the autoloader file
 ![Test Framework Interpreter](images/Screenshot_20221123_122909.png)
+
+Notes: code will be included in test runs and code execution. However, adding new packages will require a docker rebuild

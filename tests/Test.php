@@ -11,4 +11,10 @@ class Test extends TestCase
     {
         $this->assertEquals(1, 1);
     }
+
+    /** @test */
+    public function it_does_not_expect()
+    {
+        $this->assertEquals(0, 0);
+    }
 }
