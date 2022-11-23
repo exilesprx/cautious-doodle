@@ -1,1 +1,1 @@
-{"version":1,"defects":[],"times":{"Tests\\Test::it_expects":0.017,"Tests\\Test::it_does_not_expect":0}}
+{"version":1,"defects":[],"times":{"Tests\\Test::it_expects":0.011,"Tests\\Test::it_does_not_expect":0}}
