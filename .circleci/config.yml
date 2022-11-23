@@ -5,4 +5,5 @@ jobs:
     steps:
       - checkout
       - run: php --version
+      - run: composer install
       - run: composer test
