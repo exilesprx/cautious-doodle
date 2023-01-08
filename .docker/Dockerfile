@@ -1,4 +1,4 @@
-FROM webdevops/php-dev:8.1
+FROM webdevops/php-dev:8.2
 
 COPY . /opt/project
 
