@@ -1,10 +1,13 @@
-FROM webdevops/php-dev:8.1
+FROM webdevops/php-dev:8.2 AS dev
 
-COPY . /opt/project
+WORKDIR /opt/project
 
 COPY .docker/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
 
-WORKDIR /opt/project
+
+FROM dev AS build
+
+COPY . /opt/project
 
 RUN composer install
 
