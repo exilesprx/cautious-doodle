@@ -8,3 +8,7 @@ services:
       target: dev
     volumes:
       - ./:/opt/project
+    environment:
+      XDEBUG_SESSION: ${XDEBUG_SESSION:-0}
+      XDEBUG_CONFIG: ${XDEBUG_CONFIG:}
+      PHP_IDE_CONFIG: ${PHP_IDE_CONFIG=serverName=storm}
