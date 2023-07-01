@@ -9,6 +9,6 @@ services:
     volumes:
       - ./:/opt/project
     environment:
-      XDEBUG_SESSION: ${XDEBUG_SESSION:-0}
-      XDEBUG_CONFIG: ${XDEBUG_CONFIG:}
-      PHP_IDE_CONFIG: ${PHP_IDE_CONFIG=serverName=storm}
+      XDEBUG_SESSION: ${XDEBUG_SESSION:-1}
+      XDEBUG_CONFIG: ${XDEBUG_CONFIG:-}
+      PHP_IDE_CONFIG: ${PHP_IDE_CONFIG:-serverName=storm}
