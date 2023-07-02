@@ -6,6 +6,7 @@ use App\Adoption\AdoptMeService;
 use App\Adoption\Centers\Factory as CenterFactory;
 use App\Adoption\Centers\Specifications\Species\Cat;
 use App\Adoption\Centers\Specifications\Species\Dog;
+use App\Adoption\Centers\WoofAwesomeRepository;
 use Faker\Factory;
 use PHPUnit\Framework\TestCase;
 
@@ -18,24 +19,35 @@ class AdoptMeServiceTest extends TestCase
         parent::setUp();
 
         $factory = new CenterFactory(Factory::create());
-        $this->service = new AdoptMeService($factory);
+        $this->service = new AdoptMeService($factory->centers());
     }
 
     /** @test */
     public function it_expects_adoption_center_to_have_two_dogs_available()
     {
-        $center = $this->service->findCenterFor(Dog::identifier());
-        $adoptable = $center->findAnimals();
+        $adoptable = $this->service->findAnimalsOf(Dog::identifier());
 
-        $this->assertEquals(2, $adoptable->count(), "Expected two dogs.");
+        $this->assertEquals(1, $adoptable->count(), "Expected one dog center.");
     }
 
     /** @test */
     public function it_expects_adoption_center_to_have_one_cat_available()
     {
-        $center = $this->service->findCenterFor(Cat::identifier());
-        $adoptable = $center->findAnimals();
+        $adoptable = $this->service->findAnimalsOf(Cat::identifier());
 
-        $this->assertEquals(1, $adoptable->count(), "Expected one cat.");
+        $this->assertEquals(1, $adoptable->count(), "Expected one cat center.");
+    }
+
+    /** @test */
+    public function it_expects_adoption_center_to_have_two_cats_available(): void
+    {
+        $factory = new CenterFactory(Factory::create());
+        $centers = $factory->centers();
+        $centers->add(new WoofAwesomeRepository(Factory::create(), new Cat()));
+
+        $this->service = new AdoptMeService($centers);
+        $adoptable = $this->service->findAnimalsOf(Cat::identifier());
+
+        $this->assertEquals(2, $adoptable->count(), "Expected one cat.");
     }
 }

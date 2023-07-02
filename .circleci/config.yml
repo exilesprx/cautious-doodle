@@ -1,9 +1,18 @@
+version: 2.1
+
 jobs:
   build:
     docker:
-      - image: cimg/php:8.2.1
+      - image: cimg/php:8.2
     steps:
       - checkout
       - run: php --version
       - run: composer install
       - run: composer test
+
+  security:
+    docker:
+      - image: cimg/php:8.2
+    steps:
+      - checkout
+      - run: composer audit

@@ -5,7 +5,6 @@ namespace App\Adoption\Centers;
 use App\Adoption\Centers\Specifications\Species\Cat;
 use App\Adoption\Centers\Specifications\Species\Dog;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Faker\Generator;
 
 class Factory
@@ -17,7 +16,7 @@ class Factory
         $this->generator = $generator;
     }
 
-    public function getCenters(): Collection
+    public function centers(): ArrayCollection
     {
         return new ArrayCollection(
             [

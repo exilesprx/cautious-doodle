@@ -3,19 +3,22 @@
 namespace App\Adoption\Centers\Specifications\Centers;
 
 use App\Adoption\Centers\CenterContract;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 class CenterAvailabilitySpec
 {
-    private CenterContract $center;
+    private ArrayCollection $centers;
 
-    public function __construct(CenterContract $center)
+    public function __construct(ArrayCollection $centers)
     {
-        $this->center = $center;
+        $this->centers = $centers;
     }
 
     public function findAnimals(): Collection
     {
-        return $this->center->findAvailableAnimals();
+        return $this->centers->map(function (CenterContract $contract) {
+            return $contract->findAvailableAnimals();
+        });
     }
 }

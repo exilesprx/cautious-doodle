@@ -2,27 +2,28 @@
 
 namespace App\Adoption;
 
-use App\Adoption\Centers\Factory;
 use App\Adoption\Centers\Repository;
 use App\Adoption\Centers\Specifications\Centers\CenterAvailabilitySpec;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class AdoptMeService
 {
-    private Factory $factory;
+    private ArrayCollection $centers;
 
-    public function __construct(Factory $factory)
+    public function __construct(ArrayCollection $centers)
     {
-        $this->factory = $factory;
+        $this->centers = $centers;
     }
 
-    public function findCenterFor(string $species): CenterAvailabilitySpec
+    public function findAnimalsOf(string $species): Collection
     {
-        $centers = $this->factory->getCenters();
-
-        $center = $centers->findFirst(function (int $key, Repository $center) use ($species) {
+        $centers = $this->centers->filter(function (Repository $center) use ($species) {
             return $center->isSatisfiedBy($species);
         });
 
-        return new CenterAvailabilitySpec($center);
+        $spec = new CenterAvailabilitySpec($centers);
+
+        return $spec->findAnimals();
     }
 }
