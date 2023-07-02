@@ -9,6 +9,7 @@ use App\Adoption\Centers\Specifications\Species\Cat;
 use App\Adoption\Centers\Specifications\Species\Dog;
 use App\Adoption\Centers\WoofAwesomeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Faker\Factory;
 use PHPUnit\Framework\TestCase;
 
@@ -25,8 +26,10 @@ class AdoptMeServiceTest extends TestCase
         $centers = $this->twoDistinctCenters();
         $service = new AdoptMeService(new CenterAvailabilitySpec(), $centers);
         $adoptable = $service->findAnimalsOf(Dog::identifier());
+        $dogs = $this->getAdoptableCountFromCenters($adoptable);
 
         $this->assertEquals(1, $adoptable->count(), "Expected one dog center.");
+        $this->assertEquals(2, $dogs, "Expected two dogs.");
     }
 
     /** @test */
@@ -35,8 +38,10 @@ class AdoptMeServiceTest extends TestCase
         $centers = $this->twoDistinctCenters();
         $service = new AdoptMeService(new CenterAvailabilitySpec(), $centers);
         $adoptable = $service->findAnimalsOf(Cat::identifier());
+        $cats = $this->getAdoptableCountFromCenters($adoptable);
 
         $this->assertEquals(1, $adoptable->count(), "Expected one cat center.");
+        $this->assertEquals(1, $cats, "Expected one cat.");
     }
 
     /** @test */
@@ -45,8 +50,10 @@ class AdoptMeServiceTest extends TestCase
         $centers = $this->overlappingCenter();
         $service = new AdoptMeService(new CenterAvailabilitySpec(), $centers);
         $adoptable = $service->findAnimalsOf(Cat::identifier());
+        $animals = $this->getAdoptableCountFromCenters($adoptable);
 
         $this->assertEquals(2, $adoptable->count(), "Expected two centers for cats.");
+        $this->assertEquals(3, $animals, "Expected three animals.");
     }
 
     protected function twoDistinctCenters(): ArrayCollection
@@ -88,5 +95,15 @@ class AdoptMeServiceTest extends TestCase
                 )
             ]
         );
+    }
+
+    protected function getAdoptableCountFromCenters(Collection $adoptable): int
+    {
+        $animals = 0;
+        do {
+            $animals += count($adoptable->current()->toArray());
+        } while ($adoptable->next());
+
+        return $animals;
     }
 }
