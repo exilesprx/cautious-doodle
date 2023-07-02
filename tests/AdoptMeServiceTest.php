@@ -23,7 +23,7 @@ class AdoptMeServiceTest extends TestCase
     /** @test */
     public function it_expects_adoption_center_to_have_two_dogs_available()
     {
-        $centers = $this->twoDistinctCenters();
+        $centers = $this->hasCatAndDogCenter();
         $service = new AdoptMeService(new CenterAvailabilitySpec(), $centers);
         $adoptable = $service->findAnimalsOf(Dog::identifier());
         $dogs = $this->getAdoptableCountFromCenters($adoptable);
@@ -35,7 +35,7 @@ class AdoptMeServiceTest extends TestCase
     /** @test */
     public function it_expects_adoption_center_to_have_one_cat_available()
     {
-        $centers = $this->twoDistinctCenters();
+        $centers = $this->hasCatAndDogCenter();
         $service = new AdoptMeService(new CenterAvailabilitySpec(), $centers);
         $adoptable = $service->findAnimalsOf(Cat::identifier());
         $cats = $this->getAdoptableCountFromCenters($adoptable);
@@ -45,18 +45,18 @@ class AdoptMeServiceTest extends TestCase
     }
 
     /** @test */
-    public function it_expects_adoption_center_to_have_two_cats_available(): void
+    public function it_expects_adoption_centers_to_have_four_animals_available(): void
     {
-        $centers = $this->overlappingCenter();
+        $centers = $this->hasTwoCatAndOneDogCenter();
         $service = new AdoptMeService(new CenterAvailabilitySpec(), $centers);
         $adoptable = $service->findAnimalsOf(Cat::identifier());
         $animals = $this->getAdoptableCountFromCenters($adoptable);
 
         $this->assertEquals(2, $adoptable->count(), "Expected two centers for cats.");
-        $this->assertEquals(3, $animals, "Expected three animals.");
+        $this->assertEquals(4, $animals, "Expected four animals.");
     }
 
-    protected function twoDistinctCenters(): ArrayCollection
+    protected function hasCatAndDogCenter(): ArrayCollection
     {
         return new ArrayCollection(
             [
@@ -76,7 +76,7 @@ class AdoptMeServiceTest extends TestCase
         );
     }
 
-    protected function overlappingCenter(): ArrayCollection
+    protected function hasTwoCatAndOneDogCenter(): ArrayCollection
     {
         return new ArrayCollection(
             [
