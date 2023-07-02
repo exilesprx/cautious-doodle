@@ -16,3 +16,10 @@ jobs:
     steps:
       - checkout
       - run: composer audit
+
+
+workflows:
+  check_and_build:
+    jobs:
+      - security
+      - build
