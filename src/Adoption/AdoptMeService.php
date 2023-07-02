@@ -9,10 +9,12 @@ use Doctrine\Common\Collections\Collection;
 
 class AdoptMeService
 {
+    private CenterAvailabilitySpec $spec;
     private ArrayCollection $centers;
 
-    public function __construct(ArrayCollection $centers)
+    public function __construct(CenterAvailabilitySpec $spec, ArrayCollection $centers)
     {
+        $this->spec = $spec;
         $this->centers = $centers;
     }
 
@@ -22,8 +24,6 @@ class AdoptMeService
             return $center->isSatisfiedBy($species);
         });
 
-        $spec = new CenterAvailabilitySpec($centers);
-
-        return $spec->findAnimals();
+        return $this->spec->findAnimals($centers);
     }
 }

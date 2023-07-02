@@ -3,29 +3,28 @@
 namespace Tests;
 
 use App\Adoption\AdoptMeService;
-use App\Adoption\Centers\Factory as CenterFactory;
+use App\Adoption\Centers\PurfectRepository;
+use App\Adoption\Centers\Specifications\Centers\CenterAvailabilitySpec;
 use App\Adoption\Centers\Specifications\Species\Cat;
 use App\Adoption\Centers\Specifications\Species\Dog;
 use App\Adoption\Centers\WoofAwesomeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Faker\Factory;
 use PHPUnit\Framework\TestCase;
 
 class AdoptMeServiceTest extends TestCase
 {
-    private AdoptMeService $service;
-
     public function setUp(): void
     {
         parent::setUp();
-
-        $factory = new CenterFactory(Factory::create());
-        $this->service = new AdoptMeService($factory->centers());
     }
 
     /** @test */
     public function it_expects_adoption_center_to_have_two_dogs_available()
     {
-        $adoptable = $this->service->findAnimalsOf(Dog::identifier());
+        $centers = $this->twoDistinctCenters();
+        $service = new AdoptMeService(new CenterAvailabilitySpec(), $centers);
+        $adoptable = $service->findAnimalsOf(Dog::identifier());
 
         $this->assertEquals(1, $adoptable->count(), "Expected one dog center.");
     }
@@ -33,7 +32,9 @@ class AdoptMeServiceTest extends TestCase
     /** @test */
     public function it_expects_adoption_center_to_have_one_cat_available()
     {
-        $adoptable = $this->service->findAnimalsOf(Cat::identifier());
+        $centers = $this->twoDistinctCenters();
+        $service = new AdoptMeService(new CenterAvailabilitySpec(), $centers);
+        $adoptable = $service->findAnimalsOf(Cat::identifier());
 
         $this->assertEquals(1, $adoptable->count(), "Expected one cat center.");
     }
@@ -41,13 +42,51 @@ class AdoptMeServiceTest extends TestCase
     /** @test */
     public function it_expects_adoption_center_to_have_two_cats_available(): void
     {
-        $factory = new CenterFactory(Factory::create());
-        $centers = $factory->centers();
-        $centers->add(new WoofAwesomeRepository(Factory::create(), new Cat()));
+        $centers = $this->overlappingCenter();
+        $service = new AdoptMeService(new CenterAvailabilitySpec(), $centers);
+        $adoptable = $service->findAnimalsOf(Cat::identifier());
 
-        $this->service = new AdoptMeService($centers);
-        $adoptable = $this->service->findAnimalsOf(Cat::identifier());
+        $this->assertEquals(2, $adoptable->count(), "Expected two centers for cats.");
+    }
 
-        $this->assertEquals(2, $adoptable->count(), "Expected one cat.");
+    protected function twoDistinctCenters(): ArrayCollection
+    {
+        return new ArrayCollection(
+            [
+                new WoofAwesomeRepository(
+                    Factory::create(),
+                    new ArrayCollection([
+                        new Dog()
+                    ])
+                ),
+                new PurfectRepository(
+                    Factory::create(),
+                    new ArrayCollection([
+                        new Cat()
+                    ])
+                )
+            ]
+        );
+    }
+
+    protected function overlappingCenter(): ArrayCollection
+    {
+        return new ArrayCollection(
+            [
+                new WoofAwesomeRepository(
+                    Factory::create(),
+                    new ArrayCollection([
+                        new Dog(),
+                        new Cat()
+                    ])
+                ),
+                new PurfectRepository(
+                    Factory::create(),
+                    new ArrayCollection([
+                        new Cat()
+                    ])
+                )
+            ]
+        );
     }
 }

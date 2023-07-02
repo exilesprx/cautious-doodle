@@ -8,16 +8,10 @@ use Doctrine\Common\Collections\Collection;
 
 class CenterAvailabilitySpec
 {
-    private ArrayCollection $centers;
-
-    public function __construct(ArrayCollection $centers)
+    public function findAnimals(ArrayCollection $centers): Collection
     {
-        $this->centers = $centers;
-    }
-
-    public function findAnimals(): Collection
-    {
-        return $this->centers->map(function (CenterContract $contract) {
+        // TODO: apply to only available centers
+        return $centers->map(function (CenterContract $contract) {
             return $contract->findAvailableAnimals();
         });
     }

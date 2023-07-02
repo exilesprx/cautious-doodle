@@ -18,15 +18,20 @@ class Factory
 
     public function centers(): ArrayCollection
     {
+        // TODO: these are mocked repositories that would be configured through a file or database
         return new ArrayCollection(
             [
                 new WoofAwesomeRepository(
                     $this->generator,
-                    new Dog()
+                    new ArrayCollection([
+                        new Dog()
+                    ])
                 ),
                 new PurfectRepository(
                     $this->generator,
-                    new Cat()
+                    new ArrayCollection([
+                        new Cat()
+                    ])
                 )
             ]
         );

@@ -3,22 +3,25 @@
 namespace App\Adoption\Centers;
 
 use App\Adoption\Centers\Specifications\Species\Species;
+use Doctrine\Common\Collections\ArrayCollection;
 use Faker\Generator;
 
 abstract class Repository
 {
 
     protected Generator $generator;
-    protected Species $specification;
+    protected ArrayCollection $specifications;
 
-    public function __construct(Generator $generator, Species $specification)
+    public function __construct(Generator $generator, ArrayCollection $specifications)
     {
         $this->generator = $generator;
-        $this->specification = $specification;
+        $this->specifications = $specifications;
     }
 
     public function isSatisfiedBy(string $species): bool
     {
-        return $this->specification->isSatisfiedBy($species);
+        return $this->specifications->exists(function ($key, Species $spec) use ($species) {
+            return $spec->isSatisfiedBy($species);
+        });
     }
 }
