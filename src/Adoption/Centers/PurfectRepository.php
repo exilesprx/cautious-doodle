@@ -13,7 +13,7 @@ class PurfectRepository extends Repository implements CenterContract
         return (new ArrayCollection(
             [
                 [
-                    'name' => $this->generator->firstName,
+                    'name' => $this->generator->firstName(),
                     'type' => Cat::identifier()
                 ]
             ]

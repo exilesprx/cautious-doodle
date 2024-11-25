@@ -21,7 +21,7 @@ class AdoptMeServiceTest extends TestCase
     }
 
     /** @test */
-    public function it_expects_adoption_center_to_have_two_dogs_available()
+    public function it_expects_adoption_center_to_have_two_dogs_available(): void
     {
         $centers = $this->hasCatAndDogCenter();
         $service = new AdoptMeService(new CenterAvailabilitySpec(), $centers);
@@ -33,7 +33,7 @@ class AdoptMeServiceTest extends TestCase
     }
 
     /** @test */
-    public function it_expects_adoption_center_to_have_one_cat_available()
+    public function it_expects_adoption_center_to_have_one_cat_available(): void
     {
         $centers = $this->hasCatAndDogCenter();
         $service = new AdoptMeService(new CenterAvailabilitySpec(), $centers);
