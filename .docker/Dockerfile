@@ -1,16 +1,11 @@
-FROM php:8.3 AS dev
-
-COPY --from=mlocati/php-extension-installer:2.1.30 /usr/bin/install-php-extensions /usr/local/bin/
-
-COPY .docker/xdebug.ini /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-
-RUN install-php-extensions @composer-2
-
-WORKDIR /opt/project
+FROM mlocati/php-extension-installer:2.6.4 AS installer
+FROM php:8.3 AS base
 
 
-FROM dev AS build
-
-COPY . /opt/project
-
-RUN composer install
+FROM base AS dev
+COPY --from=installer /usr/bin/install-php-extensions /usr/local/bin/
+RUN install-php-extensions @composer-2 xdebug \
+  && useradd -m -u 1000 -s /bin/bash doodle
+WORKDIR /var/www
+USER doodle
+ENTRYPOINT [ "/bin/bash"]

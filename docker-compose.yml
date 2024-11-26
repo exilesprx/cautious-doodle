@@ -1,13 +1,12 @@
-version: "3.8"
-
 services:
   doodle:
+    image: exilesprx/cautious-doodle
     build:
       dockerfile: .docker/Dockerfile
       context: .
       target: dev
     volumes:
-      - ./:/opt/project
+      - ./:/var/www/
     environment:
       XDEBUG_SESSION: ${XDEBUG_SESSION:-1}
       XDEBUG_CONFIG: ${XDEBUG_CONFIG:-}
