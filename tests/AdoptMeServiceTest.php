@@ -20,8 +20,7 @@ class AdoptMeServiceTest extends TestCase
         parent::setUp();
     }
 
-    /** @test */
-    public function it_expects_adoption_center_to_have_two_dogs_available(): void
+    public function test_it_expects_adoption_center_to_have_two_dogs_available(): void
     {
         $centers = $this->hasCatAndDogCenter();
         $service = new AdoptMeService(new CenterAvailabilitySpec(), $centers);
@@ -32,8 +31,7 @@ class AdoptMeServiceTest extends TestCase
         $this->assertEquals(2, $dogs, "Expected two dogs.");
     }
 
-    /** @test */
-    public function it_expects_adoption_center_to_have_one_cat_available(): void
+    public function test_it_expects_adoption_center_to_have_one_cat_available(): void
     {
         $centers = $this->hasCatAndDogCenter();
         $service = new AdoptMeService(new CenterAvailabilitySpec(), $centers);
@@ -44,8 +42,7 @@ class AdoptMeServiceTest extends TestCase
         $this->assertEquals(1, $cats, "Expected one cat.");
     }
 
-    /** @test */
-    public function it_expects_adoption_centers_to_have_four_animals_available(): void
+    public function test_it_expects_adoption_centers_to_have_four_animals_available(): void
     {
         $centers = $this->hasTwoCatAndOneDogCenter();
         $service = new AdoptMeService(new CenterAvailabilitySpec(), $centers);
