@@ -1,9 +1,13 @@
 version: 2.1
 
-jobs:
-  build:
+executors:
+  php-executor:
     docker:
       - image: cimg/php:8.3
+
+jobs:
+  build:
+    executor: php-executor
     steps:
       - checkout
       - run: php --version
@@ -11,8 +15,7 @@ jobs:
       - run: composer test
 
   security:
-    docker:
-      - image: cimg/php:8.3
+    executor: php-executor
     steps:
       - checkout
       - run: composer install
