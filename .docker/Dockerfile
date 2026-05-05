@@ -1,4 +1,4 @@
-FROM mlocati/php-extension-installer:2.10.18 AS installer
+FROM mlocati/php-extension-installer:2.11.1 AS installer
 FROM php:8.5.5 AS base
 
 
