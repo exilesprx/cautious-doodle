@@ -1,5 +1,5 @@
 FROM mlocati/php-extension-installer:2.13.2 AS installer
-FROM php:8.6.0RC7 AS base
+FROM php:8.6.0 AS base
 
 
 FROM base AS dev
